@@ -1,6 +1,47 @@
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 
-class User(models.Model):
+
+class UserManager(BaseUserManager):
+    def create_user(self, username, email, password=None):
+        # Ensure that a username is set
+        #if not kwargs.get('username'):
+        if not username:
+            raise ValueError('Users must have a valid username')
+
+        # Ensure that an email address is set
+        if not email:
+            raise ValueError('Users must have a valid e-mail address')
+
+        if not password:
+            raise ValueError('Users must have a valid password')
+
+        """
+        if not kwargs.get('username'):
+            raise ValueError('Users must have a valid username')
+        """
+        guest = Guest.objects.create()
+        user = self.model(
+            username= username,
+            email=self.normalize_email(email),
+            guest = guest,
+        )
+        user.set_password(password)
+        user.save()
+
+        return user
+
+    def create_superuser(self, username, email=None, password=None):
+        user = self.create_user(username, email, password)
+        user.is_active = True
+        user.is_staff = True
+        user.is_superuser = True
+        user.save()
+
+        return user
+
+
+class User(AbstractUser):
     SEX_CHOICES = (
         ('FEMALE', 'FEMALE'),
         ('MALE', 'MALE')
@@ -22,6 +63,7 @@ class User(models.Model):
     authenticated = models.BooleanField(default = False)
     account_lock = models.BooleanField(default = False)
 
+    users = UserManager()
 
 # Create your models here.
 class Address(models.Model):
@@ -41,6 +83,8 @@ class Address(models.Model):
     road_address = models.CharField(max_length=80)
     customer_address = models.ForeignKey(CustomerAddress, on_delete=models.CASCADE, related_name='addresses')
 
+    class Meta:
+        abstract = True
 
 class CustomerAddress(Address):
     TYPE_CHOICES=(
