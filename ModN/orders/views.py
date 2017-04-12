@@ -1,22 +1,25 @@
-from django.shortcuts import render
-from django.http import Http404
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-
+#Djnago Restframework Modules
 from rest_framework import viewsets
+from rest_framework.response import Response
 
+from .models import (
+    OrderGroup,
+    Order,
+    OrderItem,
+    FulfillmentGroup,
+    FulfillmentOption
+)
 
-from ModN.order.models import OrderGroup
-from ModN.order.models import Order
-from ModN.order.models import OrderItem
-from ModN.order.models import Sku
-from ModN.order.models import FulfillmentGroup
+from ModN.catalog.models import Sku
 
-from ModN.order.serializers import OrderGroupSerializer
-from ModN.order.serializers import OrderSerializer
-from ModN.order.serializers import OrderItemSerializer
-from ModN.order.serializers import SkuSerializer
-from ModN.order.serializers import FulfillmentGroupSerializer
+from .serializers import (
+    OrderGroupSerializer,
+    OrderSerializer,
+    OrderItemSerializer,
+    FulfillmentGroupSerializer
+)
 
+from ModN.catalog.serializers import SkuSerializer
 # Create your views here.
 
 class OrderGroupViewSet(viewsets.ModelViewSet):

@@ -1,14 +1,20 @@
 from rest_framework import serializers, mixins
 
-from ModN.catalog.serializers import MarketSerializer
-from ModN.catelog.serializers import SellerSerializer
+from ModN.catalog.serializers import (
+    MarketSerializer,
+    SellerSerializer
+)
 
-from ModN.order.models import OrderGroup
-from ModN.order.models import Order
-from ModN.order.models import OrderItem
-from ModN.order.models import Sku
-from ModN.order.models import SkuOptions
-from ModN.order.models import FulfillmentGroup
+from .models import (
+    OrderGroup,
+    Order,
+    OrderItem,
+    FulfillmentGroup,
+    FulfillmentOption
+)
+from ModN.catalog.serializers import  SkuSerializer
+from ModN.catalog.models import Sku
+#from ModN.order.models import SkuOptions
 
 class OrderGroupSerializer(serializers.ModelSerializer):
     orders =OrderSerializer(many=True)
@@ -63,7 +69,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
             'quantity'
             'status'
         )
-
+"""
 class SkuSerializer(serializers.ModelSerializer):
 #    order_item = OrderItemSerializer(many=True)
     sku_options=SkuOptionsSerializer(many=True)
@@ -86,6 +92,7 @@ class SkuOptionsSerializer(serializers.ModelSerializer):
             'value',
             'description'
             )
+"""
 
 class FulfillmentGroupSerializer(serializers.ModelSerializer):
 #    order = OrderItemSerializer(many = True)

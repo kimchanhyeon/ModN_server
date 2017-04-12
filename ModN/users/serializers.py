@@ -1,10 +1,13 @@
 from rest_framework import serializer
-from ModN.customer.models import Address, CustomAddress
+from .models import (
+    User,
+    CustomerAddress
+)
 
-class CustomAddressSerializer(serializer.ModelSerializer):
+class CustomerAddressSerializer(serializer.ModelSerializer):
     class Meta:
-        model = CustomAddress
+        model = CustomerAddress
 
-class AddressSerializer(serializer.ModelSerializer):
+class UserSerializer(serializer.ModelSerializer):
     class Meta:
-        model = Address
+        model = User
