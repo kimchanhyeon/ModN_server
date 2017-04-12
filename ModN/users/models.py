@@ -65,6 +65,14 @@ class User(AbstractUser):
 
     users = UserManager()
 
+# class CustomerAddress(Address):
+#     TYPE_CHOICES=(
+#         ('MAIN', 'MAIN'),
+#         ('SUB', 'SUB')
+#     )
+#     address_name = models.CharField(max_length=30)
+#     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+
 # Create your models here.
 class Address(models.Model):
     address1 = models.CharField(max_length = 80)
@@ -81,7 +89,7 @@ class Address(models.Model):
     state = models.CharField(max_length= 20)
     building_address = models.CharField(max_length=80)
     road_address = models.CharField(max_length=80)
-    customer_address = models.ForeignKey(CustomerAddress, on_delete=models.CASCADE, related_name='addresses')
+# customer_address = models.ForeignKey(CustomerAddress, on_delete=models.CASCADE, related_name='addresses')
 
     class Meta:
         abstract = True
@@ -93,4 +101,3 @@ class CustomerAddress(Address):
     )
     address_name = models.CharField(max_length=30)
     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
-

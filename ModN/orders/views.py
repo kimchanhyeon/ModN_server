@@ -10,7 +10,7 @@ from .models import (
     FulfillmentOption
 )
 
-from ModN.catalog.models import Sku
+from catalog.models import Sku
 
 from .serializers import (
     OrderGroupSerializer,
@@ -19,7 +19,7 @@ from .serializers import (
     FulfillmentGroupSerializer
 )
 
-from ModN.catalog.serializers import SkuSerializer
+from catalog.serializers import SkuSerializer
 # Create your views here.
 
 class OrderGroupViewSet(viewsets.ModelViewSet):

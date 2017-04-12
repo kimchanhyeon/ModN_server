@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ModN.catalog.models import (
+from catalog.models import (
     Market,
     Seller,
     Category,

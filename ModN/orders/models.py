@@ -3,19 +3,27 @@ from django.db import models
 # Create your models here.
 
 class OrderGroup(models.Model):
+    OPEN = 'Open'
+    PROCESSED = 'Processed'
+    COMPLETED = 'Completed'
+    DECLINED = 'Declined'
+    CANCELLED = 'Cancelled'
+    FAILED = 'Failed'
+
     STATUS_CHOISCES=(
         ('Open', 'Open'),
         ('Processed', 'Processed'),
         ('Completed', 'Completed'),
         ('Declined', 'Declined'),
         ('Cancelled', 'Cancelled'),
-        ('Failed', 'Failed')
+        ('Failed', 'Failed'),
     )
-    create_by = models.ForeignField('users.User', on_delete=models.SET_NULL, null=True)
-    updated_by = models.ForeignField('users.User', on_delete=models.SET_NULL, null=True)
+    create_by = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True)
+    updated_by = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True)
 
     number = models.CharField(max_length=20, blank=True)
-    status = models.CharField(max_length=20, blank=True, choices=STATUS_CHOISCES, default=STATUS_CHOISCES('Open'))
+    # https://docs.djangoproject.com/en/1.11/ref/models/fields/  -> search choices -> look example & explain
+    status = models.CharField(max_length=20, blank=True, choices=STATUS_CHOISCES, default=OPEN)
 
     #total = shipping + subtotal + tax
     total = models.DecimalField(max_digits=15, decimal_places=2)
@@ -137,6 +145,16 @@ class Order(models.Model):
     shipping = models.DecimalField(max_digits=15, decimal_places=2)
     tax = models.DecimalField(max_digits=15, decimal_places=2, default=0)
 
+class FulfillmentOption(models.Model):
+    TYPE_CHOICES=(
+        ('WEIGHT', 'WEIGHT'),
+        ('FIXED', 'FIXED'),
+        ('PRICE', 'PRICE')
+    )
+    price = models.DecimalField(max_digits=15, decimal_places=2)
+    type=models.CharField(max_length=20, choices=TYPE_CHOICES, default='FIXED')
+    value = models.PositiveIntegerField()
+
 class FulfillmentGroup(models.Model):
     STATUS_CHOICES = (
         ('Fufilled', 'Fulfilled'),
@@ -165,21 +183,21 @@ class OrderItem(models.Model):
         ('COMPLETED', 'COMPLETED')
     )
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
-    fulfillment_group = models.ForeignKey('FulfillmentGroup', on_delete=models.NULL, null=True, related_name='fulfillment_items')
+    fulfillment_group = models.ForeignKey('FulfillmentGroup', on_delete=models.SET_NULL, null=True, related_name='fulfillment_items')
     product = models.ForeignKey('catalog.Product', on_delete=models.SET_NULL, null=True, related_name='product_order_items')
     sku = models.ForeignKey('catalog.sku', related_name='sku_order_items')
     #personel_message = models.ForeignKey(PersonelMessage)
-    description = models.harField(max_length=100)
+    description = models.CharField(max_length=100)
     status = models.CharField(max_length=20, blank=True)
     price = models.DecimalField(max_digits=15, decimal_places=2)
     quantity = models.PositiveIntegerField()
 
-class FulfillmentOption(models.Model):
-    TYPE_CHOICES=(
-        ('WEIGHT', 'WEIGHT'),
-        ('FIXED', 'FIXED'),
-        ('PRICE', 'PRICE')
-    )
-    price = models.DecimalField(max_digits=15, decimal_places=2)
-    type=models.CharField(max_length=20, choices=TYPE_CHOICES, default='FIXED')
-    value = models.PositiveIntegerField()
+# class FulfillmentOption(models.Model):
+#     TYPE_CHOICES=(
+#         ('WEIGHT', 'WEIGHT'),
+#         ('FIXED', 'FIXED'),
+#         ('PRICE', 'PRICE')
+#     )
+#     price = models.DecimalField(max_digits=15, decimal_places=2)
+#     type=models.CharField(max_length=20, choices=TYPE_CHOICES, default='FIXED')
+#     value = models.PositiveIntegerField()

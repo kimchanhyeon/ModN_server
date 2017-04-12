@@ -1,6 +1,6 @@
 from rest_framework import serializers, mixins
 
-from ModN.catalog.serializers import (
+from catalog.serializers import (
     MarketSerializer,
     SellerSerializer
 )
@@ -12,27 +12,40 @@ from .models import (
     FulfillmentGroup,
     FulfillmentOption
 )
-from ModN.catalog.serializers import  SkuSerializer
-from ModN.catalog.models import Sku
+from catalog.serializers import  SkuSerializer
+from catalog.models import Sku
 #from ModN.order.models import SkuOptions
 
-class OrderGroupSerializer(serializers.ModelSerializer):
-    orders =OrderSerializer(many=True)
+class OrderItemSerializer(serializers.ModelSerializer):
+#    order = OrderSerializer(many=True)
+    sku = SkuSerializer(many=True)
     class Meta:
-        model = OrderGroup
+        model = OrderItem
         fields = (
             'id',
-            'orders',
-            'order_group_number',
-            'order_group_status',
-            'total_shipping',
-            'toatl_price',
-#            'created_by',
-#            'updated_by',
-            'date_created',
-            'date_updated'
+            'sku',
+            'url',
+            'url_key',
+            #'base_retail_price'
+            'base_sale_price',
+            'quantity'
+            'status'
         )
 
+class FulfillmentGroupSerializer(serializers.ModelSerializer):
+#    order = OrderItemSerializer(many = True)
+    order_item = OrderItemSerializer(many=True)
+    class Meta:
+        model = FulfillmentGroup
+        fields = (
+            'id',
+            'sale_price',
+            'status',
+            'total',
+            'type',
+            'seller',
+            'order_item'
+        )
 
 class OrderSerializer(serializers.ModelSerializer):
 #    order_item = OrderItemSerializer(many=True)
@@ -54,21 +67,59 @@ class OrderSerializer(serializers.ModelSerializer):
             'updated_by'
         )
 
-class OrderItemSerializer(serializers.ModelSerializer):
-#    order = OrderSerializer(many=True)
-    sku = SkuSerializer(many=True)
+class OrderGroupSerializer(serializers.ModelSerializer):
+    orders =OrderSerializer(many=True)
     class Meta:
-        model = OrderItem
+        model = OrderGroup
         fields = (
             'id',
-            'sku',
-            'url',
-            'url_key',
-            #'base_retail_price'
-            'base_sale_price',
-            'quantity'
-            'status'
+            'orders',
+            'order_group_number',
+            'order_group_status',
+            'total_shipping',
+            'toatl_price',
+#            'created_by',
+#            'updated_by',
+            'date_created',
+            'date_updated'
         )
+
+
+# class OrderSerializer(serializers.ModelSerializer):
+# #    order_item = OrderItemSerializer(many=True)
+#     fulfillment_group = FulfillmentGroupSerializer(many=True)
+#     market = MarketSerializer(many=True)
+#     class Meta:
+#         model = Order
+#         fields = (
+#             'id',
+#             'fulfillment_group',
+#             'market',
+#             'date_created',
+#             'date_updated',
+#             'order_number',
+#             #'order_subtotal',
+#             'order_total',
+#             'total_shipping',
+#             'created_by',
+#             'updated_by'
+#         )
+
+# class OrderItemSerializer(serializers.ModelSerializer):
+# #    order = OrderSerializer(many=True)
+#     sku = SkuSerializer(many=True)
+#     class Meta:
+#         model = OrderItem
+#         fields = (
+#             'id',
+#             'sku',
+#             'url',
+#             'url_key',
+#             #'base_retail_price'
+#             'base_sale_price',
+#             'quantity'
+#             'status'
+#         )
 """
 class SkuSerializer(serializers.ModelSerializer):
 #    order_item = OrderItemSerializer(many=True)
@@ -94,17 +145,17 @@ class SkuOptionsSerializer(serializers.ModelSerializer):
             )
 """
 
-class FulfillmentGroupSerializer(serializers.ModelSerializer):
-#    order = OrderItemSerializer(many = True)
-    order_item = OrderItemSerializer(many=True)
-    class Meta:
-        model = FulfillmentGroup
-        fields = (
-            'id',
-            'sale_price',
-            'status',
-            'total',
-            'type',
-            'seller',
-            'order_item'
-        )
+# class FulfillmentGroupSerializer(serializers.ModelSerializer):
+# #    order = OrderItemSerializer(many = True)
+#     order_item = OrderItemSerializer(many=True)
+#     class Meta:
+#         model = FulfillmentGroup
+#         fields = (
+#             'id',
+#             'sale_price',
+#             'status',
+#             'total',
+#             'type',
+#             'seller',
+#             'order_item'
+#         )
