@@ -1,6 +1,7 @@
 #Djnago Restframework Modules
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.generics import GenericAPIView
 
 from .models import (
     OrderGroup,
@@ -20,8 +21,14 @@ from .serializers import (
 )
 
 from catalog.serializers import SkuSerializer
-# Create your views here.
 
+#Orders API
+
+class Order_api(GenericAPIView):
+    pass
+
+
+# Create your views here.
 class OrderGroupViewSet(viewsets.ModelViewSet):
     """
 

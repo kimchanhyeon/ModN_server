@@ -1,9 +1,15 @@
 from rest_framework import serializers, mixins
+# from ..catalog import (
+#     serializers,
+#     models,
+# )
 
 from catalog.serializers import (
     MarketSerializer,
-    SellerSerializer
+    SellerSerializer,
+    SkuSerializer,
 )
+from catalog.models import Sku
 
 from .models import (
     OrderGroup,
@@ -12,9 +18,9 @@ from .models import (
     FulfillmentGroup,
     FulfillmentOption
 )
-from catalog.serializers import  SkuSerializer
-from catalog.models import Sku
-#from ModN.order.models import SkuOptions
+# from ..catalog.serializers import  SkuSerializer
+# from ..catalog.models import Sku
+# from ModN.order.models import SkuOptions
 
 class OrderItemSerializer(serializers.ModelSerializer):
 #    order = OrderSerializer(many=True)

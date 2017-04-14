@@ -1,4 +1,13 @@
 from django.db import models
+# from catalog.models import (
+#     Market,
+#     Product,
+#     Sku
+# )
+from users.models import (
+    User,
+    CustomerAddress,
+)
 
 # Create your models here.
 
@@ -18,8 +27,8 @@ class OrderGroup(models.Model):
         ('Cancelled', 'Cancelled'),
         ('Failed', 'Failed'),
     )
-    create_by = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True)
-    updated_by = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True)
+    create_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='orderGroup_createBy_related', default="")
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='orderGroup_updatedBy_related', default="")
 
     number = models.CharField(max_length=20, blank=True)
     # https://docs.djangoproject.com/en/1.11/ref/models/fields/  -> search choices -> look example & explain
@@ -133,8 +142,8 @@ class Order(models.Model):
         ('Cancelled', 'Cancelled'),
         ('Failed', 'Failed')
     )
-    order_group = models.ForeignKey(OrderGroup, on_delete=models.CASCADE, related_name='orders')
-    market = models.ForeignKey('catalog.Market', on_delete=models.PROTECT, related_name='market_orders+')
+    order_group = models.ForeignKey(OrderGroup, on_delete=models.CASCADE, related_name='orders', default="")
+    market = models.ForeignKey('catalog.Market', on_delete=models.PROTECT, related_name='market_orders+', default="")
 
     number = models.CharField(max_length=20, blank=True)
     #status = models.CharField(max_length=20, blank=True)
@@ -163,10 +172,10 @@ class FulfillmentGroup(models.Model):
         ('Preparing', 'Preparing')
     )
 
-    fulfillment_option = models.ForeignKey(FulfillmentOption, on_delete=models.PROTECT, related_name="options_fulfillment_group+")
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='fulfillment_groups')
-    address = models.ForeignKey('customer.CustomerAddress', on_delete=models.PROTECT, related_name="address_fulfillment_groups+")
-    seller =  models.ForeignKey('catalog.Market', on_delete=models.PROTECT, related_name="seller_fulfillment_groups+")
+    fulfillment_option = models.ForeignKey(FulfillmentOption, on_delete=models.PROTECT, related_name="options_fulfillment_group+", default="")
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='fulfillment_groups', default="")
+    address = models.ForeignKey(CustomerAddress, on_delete=models.PROTECT, related_name="address_fulfillment_groups+", default="")
+    seller =  models.ForeignKey('catalog.Market', on_delete=models.PROTECT, related_name="seller_fulfillment_groups+", default="")
     #personal_message = models.ForeignKey()
 
     number = models.CharField(max_length=15, blank=True)
@@ -183,9 +192,9 @@ class OrderItem(models.Model):
         ('COMPLETED', 'COMPLETED')
     )
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
-    fulfillment_group = models.ForeignKey('FulfillmentGroup', on_delete=models.SET_NULL, null=True, related_name='fulfillment_items')
+    fulfillment_group = models.ForeignKey(FulfillmentGroup, on_delete=models.SET_NULL, null=True, related_name='fulfillment_items')
     product = models.ForeignKey('catalog.Product', on_delete=models.SET_NULL, null=True, related_name='product_order_items')
-    sku = models.ForeignKey('catalog.sku', related_name='sku_order_items')
+    sku = models.ForeignKey('catalog.Sku', related_name='orderItems_sku_related')
     #personel_message = models.ForeignKey(PersonelMessage)
     description = models.CharField(max_length=100)
     status = models.CharField(max_length=20, blank=True)

@@ -7,7 +7,12 @@ from orders import views
 # router.register(r'ordergrups', views.OrderGroupViewSet)
 
 urlpatterns = [
-    
+    # url(r'^$', views.OrderViewSet),
+    # url(r'^$', views.OrderItemViewSet),
+    # url(r'^$', views.OrderGroupViewSet),
+    # url(r'^$', views.SkuViewSet),
+    # url(r'^$', views.FulfillmentGroupViewSet),
+
     # url(r'^', include(router.urls)),
     # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

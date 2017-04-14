@@ -18,7 +18,16 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from users.views import (
+    User_api,
+    CustomerAddress_api,
+)
+
+from orders.views import Order_api
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^orders/', include('orders.urls', namespace = 'orders')),
+    url(r'^api/users/', User_api.as_view()),
+    url(r'^api/users/address/', CustomerAddress_api.as_view()),
+    url(r'^api/orders/', Order_api.as_view()),
 ]

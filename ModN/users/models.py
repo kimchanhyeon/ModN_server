@@ -20,11 +20,11 @@ class UserManager(BaseUserManager):
         if not kwargs.get('username'):
             raise ValueError('Users must have a valid username')
         """
-        guest = Guest.objects.create()
+        # guest = Guest.objects.create()
         user = self.model(
             username= username,
             email=self.normalize_email(email),
-            guest = guest,
+            # guest = guest,
         )
         user.set_password(password)
         user.save()
@@ -41,29 +41,29 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractUser):
-    SEX_CHOICES = (
-        ('FEMALE', 'FEMALE'),
-        ('MALE', 'MALE')
-    )
-    address = models.OneToOneField("CustomerAddress")
-
-    type = models.CharField(max_length=30)
-    username = models.CharField(max_length=50)
-    email = models.CharField(max_length=50)
-    password = models.CharField(max_length=50)
-    first_name = models.CharField(max_length=50, blank= True)
-    last_name = models.CharField(max_length=50, blank= True)
-    name = models.CharField(max_length=100)
-    cell_phone = models.CharField(max_length=20)
-    sex = models.CharField(max_length=6, choices=SEX_CHOICES)
-    time_created = models.DateTimeField(auto_now_add=True)
-    time_updated = models.DateTimeField(auto_now=True)
-
-    authenticated = models.BooleanField(default = False)
-    account_lock = models.BooleanField(default = False)
-
-    users = UserManager()
+# class User(AbstractUser):
+#     SEX_CHOICES = (
+#         ('FEMALE', 'FEMALE'),
+#         ('MALE', 'MALE')
+#     )
+#     address = models.OneToOneField(CustomerAddress)
+#
+#     type = models.CharField(max_length=30)
+#     username = models.CharField(max_length=100, unique=True)
+#     email = models.CharField(max_length=100)
+#     password = models.CharField(max_length=100)
+#     first_name = models.CharField(max_length=50, blank= True)
+#     last_name = models.CharField(max_length=50, blank= True)
+#     name = models.CharField(max_length=100)
+#     cell_phone = models.CharField(max_length=20)
+#     sex = models.CharField(max_length=6, choices=SEX_CHOICES)
+#     time_created = models.DateTimeField(auto_now_add=True)
+#     time_updated = models.DateTimeField(auto_now=True)
+#
+#     authenticated = models.BooleanField(default = False)
+#     account_lock = models.BooleanField(default = False)
+#
+#     users = UserManager()
 
 # class CustomerAddress(Address):
 #     TYPE_CHOICES=(
@@ -75,6 +75,7 @@ class User(AbstractUser):
 
 # Create your models here.
 class Address(models.Model):
+    # id = models.AutoField(primary_key=True)
     address1 = models.CharField(max_length = 80)
     address2 = models.CharField(max_length = 40)
     city = models.CharField(max_length = 80)
@@ -89,7 +90,7 @@ class Address(models.Model):
     state = models.CharField(max_length= 20)
     building_address = models.CharField(max_length=80)
     road_address = models.CharField(max_length=80)
-# customer_address = models.ForeignKey(CustomerAddress, on_delete=models.CASCADE, related_name='addresses')
+    # customer_address = models.ForeignKey(CustomerAddress, on_delete=models.CASCADE, related_name='addresses')
 
     class Meta:
         abstract = True
@@ -99,5 +100,29 @@ class CustomerAddress(Address):
         ('MAIN', 'MAIN'),
         ('SUB', 'SUB')
     )
+    # id = models.AutoField(primary_key=True)
     address_name = models.CharField(max_length=30)
     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+
+class User(AbstractUser):
+    SEX_CHOICES = (
+        ('FEMALE', 'FEMALE'),
+        ('MALE', 'MALE')
+    )
+    address = models.OneToOneField(CustomerAddress, null=True, blank=True)
+    type = models.CharField(max_length=30)
+    username = models.CharField(max_length=100, unique=True)
+    email = models.CharField(max_length=100)
+    password = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=50, blank= True)
+    last_name = models.CharField(max_length=50, blank= True)
+    name = models.CharField(max_length=100)
+    cell_phone = models.CharField(max_length=20)
+    sex = models.CharField(max_length=6, choices=SEX_CHOICES)
+    time_created = models.DateTimeField(auto_now_add=True)
+    time_updated = models.DateTimeField(auto_now=True)
+
+    authenticated = models.BooleanField(default = False)
+    account_lock = models.BooleanField(default = False)
+
+    users = UserManager()
