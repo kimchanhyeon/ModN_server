@@ -7,6 +7,7 @@ from orders import views
 # router.register(r'ordergrups', views.OrderGroupViewSet)
 
 urlpatterns = [
+    url(r'^$', views.Order_api.as_view()),
     # url(r'^$', views.OrderViewSet),
     # url(r'^$', views.OrderItemViewSet),
     # url(r'^$', views.OrderGroupViewSet),

@@ -1,5 +1,6 @@
 #Djnago Restframework Modules
-from rest_framework import viewsets
+from django.http.response import HttpResponse
+from rest_framework import viewsets, mixins
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 
@@ -24,8 +25,12 @@ from catalog.serializers import SkuSerializer
 
 #Orders API
 
-class Order_api(GenericAPIView):
-    pass
+class Order_api(GenericAPIView, mixins.ListModelMixin):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
 
 # Create your views here.

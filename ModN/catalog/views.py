@@ -1,6 +1,8 @@
 # Djnago Restframework Modules
-from rest_framework import viewsets
+from django.http.response import HttpResponse
+from rest_framework import viewsets, mixins
 from rest_framework.response import Response
+from rest_framework.generics import GenericAPIView
 
 # Models
 from .models import (
@@ -20,6 +22,14 @@ from .serializers import (
     SkuSerializer
 )
 
+#catalog API
+
+class Product_api(GenericAPIView, mixins.ListModelMixin):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
 # Create your views here.
 class MarketViewSet(viewsets.ModelViewSet):
