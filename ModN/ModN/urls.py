@@ -27,7 +27,6 @@ from orders.views import Order_api
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/users/', User_api.as_view()),
-    url(r'^api/users/address/', CustomerAddress_api.as_view()),
+    url(r'^api/users/', include('users.urls')),
     url(r'^api/orders/', Order_api.as_view()),
 ]

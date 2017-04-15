@@ -25,6 +25,14 @@ class User_api(GenericAPIView, mixins.ListModelMixin):
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
+    def post(self, request, *args, **kwargs):
+        return HttpResponse('This is POST request')
+        # reqFirstName = request.GET['first_name']
+        # reqLastName = request.GET['last_name']
+        # books = User(first_name=reqFirstName, last_name=reqLastName)
+        # books.save()
+        # return self.list(books, *args, **kwargs)
+
 class CustomerAddress_api(GenericAPIView, mixins.ListModelMixin):
     queryset = CustomerAddress.objects.all()
     serializer_class = CustomerAddressSerializer
