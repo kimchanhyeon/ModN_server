@@ -24,7 +24,6 @@ class UserManager(BaseUserManager):
         user = self.model(
             username= username,
             email=self.normalize_email(email),
-            # guest = guest,
         )
         user.set_password(password)
         user.save()
@@ -40,38 +39,6 @@ class UserManager(BaseUserManager):
 
         return user
 
-
-# class User(AbstractUser):
-#     SEX_CHOICES = (
-#         ('FEMALE', 'FEMALE'),
-#         ('MALE', 'MALE')
-#     )
-#     address = models.OneToOneField(CustomerAddress)
-#
-#     type = models.CharField(max_length=30)
-#     username = models.CharField(max_length=100, unique=True)
-#     email = models.CharField(max_length=100)
-#     password = models.CharField(max_length=100)
-#     first_name = models.CharField(max_length=50, blank= True)
-#     last_name = models.CharField(max_length=50, blank= True)
-#     name = models.CharField(max_length=100)
-#     cell_phone = models.CharField(max_length=20)
-#     sex = models.CharField(max_length=6, choices=SEX_CHOICES)
-#     time_created = models.DateTimeField(auto_now_add=True)
-#     time_updated = models.DateTimeField(auto_now=True)
-#
-#     authenticated = models.BooleanField(default = False)
-#     account_lock = models.BooleanField(default = False)
-#
-#     users = UserManager()
-
-# class CustomerAddress(Address):
-#     TYPE_CHOICES=(
-#         ('MAIN', 'MAIN'),
-#         ('SUB', 'SUB')
-#     )
-#     address_name = models.CharField(max_length=30)
-#     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
 
 # Create your models here.
 class Address(models.Model):
@@ -109,7 +76,7 @@ class User(AbstractUser):
         ('FEMALE', 'FEMALE'),
         ('MALE', 'MALE')
     )
-    address = models.OneToOneField(CustomerAddress, null=True, blank=True)
+    address = models.OneToOneField("users.CustomerAddress", null=True, blank=True)
     type = models.CharField(max_length=30)
     username = models.CharField(max_length=100, unique=True)
     email = models.CharField(max_length=100)

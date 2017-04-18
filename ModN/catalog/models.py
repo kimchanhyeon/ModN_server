@@ -33,13 +33,18 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=15, decimal_places=2)
 
 class Sku(models.Model):
-    order_item = models.ForeignKey(OrderItem, on_delete=models.PROTECT, related_name='skus_orderItem_related', default="")
-    product = models.ForeignKey(Product, related_name='skus', default="")
+    order_item = models.ForeignKey("orders.OrderItem", on_delete=models.PROTECT, related_name='skus_orderItem_related', default="")
+    product = models.ForeignKey(Product, related_name='skus',    default="")
     description = models.CharField(max_length=80, blank=True)
     option_value = models.CharField(max_length=80, blank=True)
     price = models.DecimalField(max_digits=15, decimal_places=2)
     quantity = models.PositiveIntegerField()
 
+class SkuAttribute(models.Model):
+    sku = models.ForeignKey("catalog.Sku", related_name="+")
+    order = models.IntegerField()
+    attribute_name = models.CharField(max_length=100)
+    attribute_value = models.CharField(max_length=100)
 # class Product(models.Model):
 #     market = models.ForeignKey(Market, on_delete= models.PROTECT, related_name='market_products')
 #     seller = models.ForeignKey(Seller, on_delete=models.PROTECT, related_name='products')
